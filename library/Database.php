@@ -2,9 +2,9 @@
 
 class Database {
 
-	function __construct($host, $db, $user, $password) {
+	function __construct($host, $name, $user, $password) {
 		try {
-			return new PDO("mysql:host=$host;dbname=$db", $user, $password);
+			return new PDO("mysql:host=$host;dbname=$name", $user, $password);
 		}
 		catch(PDOException $e) {
 			return $e->getMessage();
