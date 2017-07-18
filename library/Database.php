@@ -2,7 +2,7 @@
 
 class Database {
 
-	public function Database($host, $db, $user, $password) {
+	function __construct($host, $db, $user, $password) {
 		try {
 			return new PDO("mysql:host=$host;dbname=$db", $user, $password);
 		}

@@ -4,92 +4,61 @@ class Router {
 
 	public $uri;
 	public $params = array();
-	public $route;
 	public $page;
 	public $module;
 	public $title;
 
-	public function Router() {
+	function __construct() {
 
-		$this->route = $_SERVER['REQUEST_URI'];
+		$this->uri = "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
-		$this->parse_route();
-		$this->get_page();
+		$this->parse_url();
+		$this->page();
 
 	}
 
-	public function parse_route() {
+	private function parse_url() {
 
-		$route = $this->route;
+		$uri_array = parse_url($this->uri);
 
-		if (strstr($route, "?")) {
-			
-			$params_string = explode("?", $route);
-			
-			$this->route = $params_string[0];
-			$params_string = $params_string[1];
-			
-			$params_array = explode("&", $params_string);
-			
-			foreach ($params_array as $param_pair) {
-
-				$temp_param = explode("=", $param_pair);
-				$this->params[$temp_param[0]] = $temp_param[1];
-				$_GET[$temp_param[0]] = $temp_param[1];
-				unset($temp_param);
-
-			}
-
+		foreach ($uri_array as $key => $value) {
+			$this->$key = $value;
 		}
 
-		return $this->route;
+		$this->params = $_GET;
+
+		return $this->uri;
 
 	}
 
-	public function get_page() {
+	private function page() {
 
-		$this->route = substr($this->route, 1);
+		$this->path = substr($this->path, 1);
 
-		if (($this->route == "") || ($this->route == "index.php")) {
-			
+		if (($this->path == "") || ($this->path == "index.php")) {
+
 			$this->module = 'home';
-			$this->page = 'pages/home' . EXT;
-		
+			$this->page = 'pages/home' . DISPLAYEXT;
+
 		} else {
 
-			$route_array = explode(DIRECTORY_SEPARATOR, $this->route);
+			$path_array = explode(DIRECTORY_SEPARATOR, $this->path);
 
-			$this->module = $route_array[0];
-			$this->page = 'pages/' . $this->route . EXT;
+			$this->module = $path_array[0];
+			$this->page = 'pages/' . $this->path . DISPLAYEXT;
 
 		}
 
 		$this->title = ucfirst($this->module);
 
-		if (!$this->filexists($this->page)) {
+		if (!stream_resolve_include_path($this->page)) {
 
 			$this->module = 'not-found';
-			$this->page = 'pages/404' . EXT;
+			$this->page = 'pages/404' . DISPLAYEXT;
 
 		}
 
 		return $this->page;
-
-	}
-
-	private function filexists($page) {
-
-		if (file_exists($page))
-			return true;
-
-		$include_paths = explode(PATH_SEPARATOR, get_include_path());
-
-		foreach ($include_paths as $path) {
-			if (file_exists($path . DIRECTORY_SEPARATOR . $page))
-				return true;
-		}
-
-		return false;
 
 	}
 

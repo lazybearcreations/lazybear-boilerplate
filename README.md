@@ -1,7 +1,7 @@
-# [Lazy Bear Boilerplate](https://github.com/lazybearonline/lazy-bear-boilerplate)
+# [Lazybear Boilerplate](https://github.com/lazybearonline/lazy-bear-boilerplate)
 =====================
 
-Lazy Bear Boilerplate is a PHP Boilerplate using Twitter Bootstrap. It is designed to make starting a basic website project faster and easier.
+Lazybear Boilerplate is a PHP Boilerplate using Bootstrap. It is designed to facilitate starting a basic website project faster and easier.
 
 ## Quick start
 
@@ -14,7 +14,7 @@ The index.php in the public_html folder is the central control, all requests are
 
 ## Router
 
-The Router class services all your requests - It tells the application where to go and fetch the file you are trying to reach on the server
+The Router class services all your requests - It tells the application where to go and fetch the file you are trying to reach on the server.
 
 ## Database
 
